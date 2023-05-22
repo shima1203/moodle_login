@@ -17,4 +17,4 @@
 
 ### 実行
 
-python3 moodle_login.py
+nohup python3 moodle_login.py &
