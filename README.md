@@ -1,9 +1,15 @@
 # moodle_login
 
-・ユーザー名, パスワードを入力
+### 初期設定
 
-・ログインするmoodleのリンクとアクセス先のURLを変更
+・username : ユーザー名
+・password : パスワード
+・login_url : ログイン画面のURL(IDとパスワードを入力する画面)
+・course_url : コース画面のURL(出欠登録する科目の画面)
+・login_times : ログインする画面(好きな回数分だけリストに追加)
 
-・ログイン時間を指定
 
-　-好きな回数分リストに追加
+
+### 実行
+
+python3 moodle_login.py
