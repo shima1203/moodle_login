@@ -3,10 +3,15 @@
 ### 初期設定
 
 ・username : ユーザー名
+
 ・password : パスワード
+
 ・login_url : ログイン画面のURL(IDとパスワードを入力する画面)
+
 ・course_url : コース画面のURL(出欠登録する科目の画面)
+
 ・login_times : ログインする画面(好きな回数分だけリストに追加)
+
 
 
 
