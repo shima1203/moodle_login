@@ -9,8 +9,8 @@ username = "ユーザー名"
 password = "パスワード"
 
 # ログインURLとコースのURL（適宜変更してください）
-login_url = "https://moodle.s.kyushu-u.ac.jp/login/index.php"
-course_url = "https://moodle.s.kyushu-u.ac.jp/course/view.php?id=50835"
+login_url = "ログイン画面のURL"
+course_url = "コース画面のURL"
 
 # ログイン時間
 login_times = ["15:52", "15:53", "15:54", "15:55", "15:56"]
