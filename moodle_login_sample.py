@@ -20,7 +20,7 @@ login_times = ["15:52", "15:53", "15:54", "15:55", "15:56"]
 
 
 
-# ログインセッションを確立するためのセッションオブジェクトを作成
+# セッションオブジェクトを作成
 session = requests.Session()
 f = open('log.txt', 'w', encoding='UTF-8')
 
@@ -68,7 +68,7 @@ def access_moodle():
         print("アクセスに失敗しました")
         f.write("アクセスに失敗しました\n")
 
-    # 必要な処理を実行（例: ページの解析や特定の操作）
+    # 出席情報を取得＆ログファイル出力
     soup = bs4.BeautifulSoup(response.text, "html.parser")
     elems = soup.find('title')
     print(elems)
@@ -88,7 +88,7 @@ def access_moodle():
     f.write("--------------------------------------------------------------------\n")
     f.write("--------------------------------------------------------------------\n")
     
-    # ログアウト（任意のタイミングでログアウトする場合）
+    # ログアウト
     logout_url = "https://moodle.s.kyushu-u.ac.jp/login/logout.php"
     session.get(logout_url)
 
