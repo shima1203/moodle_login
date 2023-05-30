@@ -4,9 +4,9 @@
 
 login_url = "ログインページのURL"
 
-login_info= [["コースページのURL", "出席ボタンのURL", "自動出欠ファイルのURL", "ログイン時間", "曜日", "ログファイルの名前"]]
+login_info= [["コースページのURL", "出席ボタンのURL", "自動出欠ページのURL", "ログイン時間", "曜日", "ログファイルの名前"]]
 
-
+※login_infoの詳細は下を参照
 
 
 
@@ -15,6 +15,7 @@ login_info= [["コースページのURL", "出席ボタンのURL", "自動出欠
 nohup python3 moodle_login.py &
 
 (サーバーでsshから実行する場合はタイムアウトしてプロセスが終了してしまうため、バックグラウンド実行が必要。終了はkillコマンドで。)
+
 
 ### 終了
 
@@ -25,3 +26,20 @@ kill 1290847 (実行時に表示される番号がプロセスID)
 
 
 ps aux　(実行中のタスク一覧)
+
+
+
+
+### login_info 詳細
+
+(例)
+
+    login_info= [["https://moodle.s.kyushu-u.ac.jp/course/view.php?id=50835", "https://moodle.s.kyushu-u.ac.jp/blocks/autoattend/semiautoattend.php?course=50835&attsid=535970", "https://moodle.s.kyushu-u.ac.jp/blocks/autoattend/semiautoattend.php", ["16:41", "16:43", "16:45", "16:50", "16:54", "17:10"], "tuesday", 'log_dhizitaru.txt'],
+
+            　　["https://moodle.s.kyushu-u.ac.jp/course/view.php?id=50807", "", "", ["10:31", "10:32", "10:33", "10:34", "10:35", "10:44"], "thursday", 'log_jouhouriron.txt'],
+            
+            　　["https://moodle.s.kyushu-u.ac.jp/course/view.php?id=51011", "", "", ["13:00", "13:01", "13:02", "13:03", "13:04", "13:05", "19:50"], "tuesday", 'log_kakuritu.txt'],
+            
+            　　]
+              
+![image](https://github.com/shima1203/moodle_login/assets/107593704/c1bfa722-e5f7-468c-a058-418a951542b8)
