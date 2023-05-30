@@ -5,98 +5,110 @@ import datetime
 import bs4
 
 # Moodleのログイン情報
-username = "2889728404"
-password = "t3F8w!RZxmhjUWg"
+username = "ユーザー名"
+password = "パスワード"
 
 # ログインURLとコースのURL（適宜変更してください）
-login_url = "https://moodle.s.kyushu-u.ac.jp/login/index.php"
-course_url = "https://moodle.s.kyushu-u.ac.jp/course/view.php?id=50835"
-attendance_form_url = "https://moodle.s.kyushu-u.ac.jp/blocks/autoattend/semiautoattend.php?course=50835&attsid=535970"
-attendance_url = "https://moodle.s.kyushu-u.ac.jp/blocks/autoattend/semiautoattend.php"
-
-# ログイン時間
-login_times = ["16:41", "16:43", "16:45", "16:50", "16:54", "17:10"]
-# login_times = ["18:00", "18:01", "18:02", "18:03", "18:04", "18:05", "18:06", "18:07", "18:08", "18:09", "18:10", "18:11", "18:12", "18:13", "18:14", "18:30", "18:00", "02:30", "03:00" , "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30" , "07:00", "07:30", "08:00", "08:30", "09:00", "09:30" , "10:00", "10:30", "11:00", "11:30", "12:00", "12:30" , "13:00", "13:30", "14:00", "14:30", "15:00", "15:30"]
+# login_url : ログインページのURL
+# login_info : [コースページのURL, 出席ボタンのURL, 自動出欠ファイルのURL, ログイン時間, 曜日, ログファイルの名前]
+login_url = "ログインページのURL"
+login_info= [["コースページのURL", "出席ボタンのURL", "自動出欠ファイルのURL", "ログイン時間", "曜日", "ログファイルの名前"]]
 
 
 
 
-# セッションオブジェクトを作成
-session = requests.Session()
-f = open('log_dhizitaru.txt', 'w', encoding='UTF-8')
 
-def login_moodle():
+
+def login_moodle(info):
+    # セッションオブジェクトを作成
+    session = requests.Session()
+    
+    # ログファイルを作成
+    f = open(info[5], 'w', encoding='UTF-8')
+    
     print(datetime.datetime.now())
     f.write(str(datetime.datetime.now()))
     f.write("\n")
-    # ログイン情報をPOSTデータに設定
-    response = session.post(login_url)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
     
+    # ログイントークンを取得
+    response_login_page = session.post(login_url)
+    soup_login = bs4.BeautifulSoup(response_login_page.text, "html.parser")
+    
+    # moodleにログイン
     try:
         login_data = {
-            "logintoken" : soup.find('input', attrs={'name':'logintoken'}).get('value'),
+            "logintoken" : soup_login.find('input', attrs={'name':'logintoken'}).get('value'),
             "username": username,
             "password": password
         }
         # ログインリクエストを送信
-        response = session.post(login_url, data=login_data)
-        soup = bs4.BeautifulSoup(response.text, "html.parser")
-        elems = soup.find('title')
+        response_login = session.post(login_url, data=login_data)
+        soup_login = bs4.BeautifulSoup(response_login.text, "html.parser")
+        elems = soup_login.find('title')
         print(elems)
+        f.write(elems)
+        f.write("\n")
         
     except:
-        print("ログインに失敗しました")
-        f.write("ログインに失敗しました\n")
-
+        print("・ログインに失敗したか、既にログインしています")
+        f.write("・ログインに失敗したか、既にログインしています\n")
     # ログインが成功したかを確認
-    if response.status_code == 200 and "ログインに失敗しました" not in response.text:
-        print("ログインに成功しました")
-        f.write("ログインに成功しました\n")
+    if response_login.status_code == 200 and "ログインに失敗しました" not in response_login.text:
+        print("・ログインに成功しました")
+        f.write("・ログインに成功しました\n")
     else:
-        print("ログインに失敗しました")
-        f.write("ログインに失敗しました\n")
+        print("・ログインに失敗しました")
+        f.write("・ログインに失敗しました\n")
     
 
-def access_moodle():
     # コースページにアクセス
-    response1 = session.post(attendance_form_url)
-    soup = bs4.BeautifulSoup(response1.text, "html.parser")
-    response2 = session.post(attendance_url)
+    course_url = info[0]
+    attendance_button_url = info[1]
+    attendance_file_url = info[2]
+    
     try:
-        course_data = {
-                "sesskey" : soup.find('input', attrs={'name':'sesskey'}).get('value'),
-                "attsid": soup.find('input', attrs={'name':'attsid'}).get('value'),
-                "course": soup.find('input', attrs={'name':'course'}).get('value'),
-                "class": soup.find('input', attrs={'name':'class'}).get('value'),
-                "submit" : "送信"
-            }
-        print("course_data : ", course_data)
-        response2 = session.post(attendance_url, data=course_data)
-    
-    
-        
+        response_course = session.get(course_url)
     except:
-            print("accseeに失敗しました")
-            f.write("accessに失敗しました\n")
-            
+        print("・コースページへのアクセスに失敗しました")
+        f.write("・コースページへのアクセスに失敗しました\n")
     # アクセスが成功したかを確認
-    if response2.status_code == 200:
-        print("アクセスに成功しました")
-        f.write("アクセスに成功しました\n")
-    else:
-        print("アクセスに失敗しました")
-        f.write("アクセスに失敗しました\n")
+    if response_course.status_code == 200:
+        print("・コースページへのアクセスに成功しました")
+        f.write("・コースページへのアクセスに成功しました\n")
+    # 自動出欠ファイルにアクセス
+    try:
+        response_attendance_file = session.get(course_url)
+        if(attendance_button_url != ""):
+            responce_attendance_button = session.get(attendance_button_url)
+            soup_attendance_button = bs4.BeautifulSoup(responce_attendance_button.text, "html.parser")
+            course_data = {
+                    "sesskey" : soup_attendance_button.find('input', attrs={'name':'sesskey'}).get('value'),
+                    "attsid": soup_attendance_button.find('input', attrs={'name':'attsid'}).get('value'),
+                    "course": soup_attendance_button.find('input', attrs={'name':'course'}).get('value'),
+                    "class": soup_attendance_button.find('input', attrs={'name':'class'}).get('value'),
+                    "submit" : "送信"
+                }
+            response_attendance_file = session.post(attendance_file_url, data=course_data)
+    except:
+        print("・自動出欠に失敗しました")
+        f.write("・自動出欠に失敗しました\n")
+    # アクセスが成功したかを確認
+    if response_attendance_file.status_code == 200:
+        print("・自動出欠に成功しました")
+        f.write("・自動出欠に成功しました\n")
+
     # 出席情報を取得＆ログファイル出力
-    soup = bs4.BeautifulSoup(response2.text, "html.parser")
-    elems = soup.find('title')
+    response_course = session.get(course_url)
+    soup_course = bs4.BeautifulSoup(response_course.text, "html.parser")
+    elems = soup_course.find('title')
     print(elems)
     
     print("--------------------------------------------------------------------")
     print("--------------------------------------------------------------------")
-    # elems_ = soup.find_all("div", class_="card-body p-3")
-    elems__ = soup.find_all("div", class_="container-fluid d-print-block")
+    # elems_ = soup_course.select("div.container-fluid d-print-block")
+    elems__ = soup_course.find_all("div", class_="card-text content mt-3")
     print(elems__)
+    # print(elems_)
     print("--------------------------------------------------------------------")
     print("--------------------------------------------------------------------")
     
@@ -112,9 +124,20 @@ def access_moodle():
     session.get(logout_url)
 
 # ログインとアクセスをスケジュール
-for login_time in login_times:
-    schedule.every().day.at(login_time).do(login_moodle)
-    schedule.every().day.at(login_time).do(access_moodle)
+for login_info_ in login_info:
+    login_times = login_info_[3]
+    day = login_info_[4]
+    for login_time in login_times:
+        if day == "monday":
+            schedule.every().monday.at(login_time).do(login_moodle, login_info_)
+        elif day == "tuesday":
+            schedule.every().tuesday.at(login_time).do(login_moodle, login_info_)
+        elif day == "wednesday":
+            schedule.every().wednesday.at(login_time).do(login_moodle, login_info_)
+        elif day == "thursday":
+            schedule.every().thursday.at(login_time).do(login_moodle, login_info_)
+        elif day == "friday":
+            schedule.every().friday.at(login_time).do(login_moodle, login_info_)
 
 while True:
     schedule.run_pending()
