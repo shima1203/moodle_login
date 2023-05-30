@@ -41,5 +41,6 @@ ps aux　(実行中のタスク一覧)
             　　["https://moodle.s."YOUR Univ.".ac.jp/course/view.php?id=51011", "", "", ["13:00", "13:01", "13:02", "13:03", "13:04", "13:05"], "tuesday", 'log_kakuritu.txt'],
             
             　　]
+    ※コースページにアクセスするだけでよい場合は残りの2つは""で良い
               
 ![image](https://github.com/shima1203/moodle_login/assets/107593704/25025002-edfc-4945-b8ed-496b0910dbf3)
