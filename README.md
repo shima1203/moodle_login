@@ -38,7 +38,7 @@ ps aux　(実行中のタスク一覧)
 
             　　["https://moodle.s."YOUR Univ.".ac.jp/course/view.php?id=50807", "", "", ["10:31", "10:32", "10:33", "10:34", "10:35", "10:44"], "thursday", 'log_jouhouriron.txt'],
             
-            　　["https://moodle.s."YOUR Univ.".ac.jp/course/view.php?id=51011", "", "", ["13:00", "13:01", "13:02", "13:03", "13:04", "13:05", "19:50"], "tuesday", 'log_kakuritu.txt'],
+            　　["https://moodle.s."YOUR Univ.".ac.jp/course/view.php?id=51011", "", "", ["13:00", "13:01", "13:02", "13:03", "13:04", "13:05"], "tuesday", 'log_kakuritu.txt'],
             
             　　]
               
